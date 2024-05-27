@@ -25,6 +25,7 @@ then
         read -p "Enter Task no. : " no
         if [[ $no -lt 4 ]] && [[ $no -gt 0 ]]
         then
+            echo "Select file to submit : "
             select file in ${files[@]}
             do
                 mkdir -p ~/$option/Task$no/
