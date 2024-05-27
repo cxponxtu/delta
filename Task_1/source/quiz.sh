@@ -21,7 +21,7 @@ then
         for(( i = 1; i <= ${#questions[@]}; i++ ))
         do
             echo "$i) `zenity --forms --title="Question" \
-                --text="${question[$i]}" \
+                --text="${questions[$i]}" \
                 --add-entry="Answer"`" >> ~/quiz_answers.txt 
         done
         rm -f ~/.quiz
