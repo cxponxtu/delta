@@ -57,41 +57,42 @@ then
     while IFS=" " read -ra mente
     do
         status=()
-        alldir=(`dir /home/core/Mentees/r${mente[1]}/$mentordom`)
-        for folders in ${alldir[@]}
-        do  
-            tasknum="`echo $folders | grep -o '[[:digit:]]*'`"
-
-            if ! [[ -d ~/submittedTasks/$folders/${mente[1]} ]]
-            then 
-                ln -s /home/core/Mentees/r${mente[1]}/$mentordom/$folders ~/submittedTasks/$folders/${mente[1]}
-            fi 
-
-            if [ "`dir ~/submittedTasks/$folders/${mente[1]}`" ]
-            then status[$tasknum]="y"
-            fi                  
-        done
-
-        for j in {1..3}
-        do
-            if [ -z ${status[$j]} ]
-            then status[$j]="n"
-            fi
-        done
-    
-        if [ "`cat /home/core/Mentees/r${mente[1]}/task_completed.txt | grep "${mentordom}"`" ]
+        if [ -d /home/core/Mentees/r${mente[1]}/$mentordom ]
         then
-            lineno="`grep -n "${mentordom}" /home/core/Mentees/r${mente[1]}/task_completed.txt | cut -f1 -d:`"   
-            for (( n = 0; n <= 3; n++ ))
-            do
-                sed -i "${lineno}d" /home/core/Mentees/r${mente[1]}/task_completed.txt
+            alldir=(`dir /home/core/Mentees/r${mente[1]}/$mentordom`)
+            for folders in ${alldir[@]}
+            do  
+                tasknum="`echo $folders | grep -o '[[:digit:]]*'`"
+
+                if ! [[ -d ~/submittedTasks/$folders/${mente[1]} ]]
+                then 
+                    ln -s /home/core/Mentees/r${mente[1]}/$mentordom/$folders ~/submittedTasks/$folders/${mente[1]}
+                fi 
+
+                if [ "`dir ~/submittedTasks/$folders/${mente[1]}`" ]
+                then status[$tasknum]="y"
+                fi                  
             done
-        fi
-        echo "${mentordom}:
+
+            for j in {1..3}
+            do
+                if [ -z ${status[$j]} ]
+                then status[$j]="n"
+                fi
+            done
+        
+            if [ "`cat /home/core/Mentees/r${mente[1]}/task_completed.txt | grep "${mentordom}"`" ]
+            then
+                lineno="`grep -n "${mentordom}" /home/core/Mentees/r${mente[1]}/task_completed.txt | cut -f1 -d:`"   
+                for (( n = 0; n <= 3; n++ ))
+                do
+                    sed -i "${lineno}d" /home/core/Mentees/r${mente[1]}/task_completed.txt
+                done
+            fi
+            echo "${mentordom}:
     Task1: ${status[1]}
     Task2: ${status[2]}
     Task3: ${status[3]}" >> /home/core/Mentees/r${mente[1]}/task_completed.txt
-            
+        fi      
     done < ~/allocatedMentees.txt
-
 fi
