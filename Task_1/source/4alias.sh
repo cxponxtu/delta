@@ -6,7 +6,7 @@ then
     domain=()
     i=0
     files=()
-    tmp="`ls -p | grep -v -e / -e task_submitted.txt -e task_completed.txt -e domain_pref.txt`"
+    tmp="`ls ~ -p | grep -v -e / -e task_submitted.txt -e task_completed.txt -e domain_pref.txt`"
     while read name
     do
         files[$i]=$name
@@ -25,17 +25,21 @@ then
         read -p "Enter Task no. : " no
         if [[ $no -lt 4 ]] && [[ $no -gt 0 ]]
         then
-            echo "Select file to submit : "
-            select file in ${files[@]}
-            do
-                mkdir -p ~/$option/Task$no/
-                cp $file ~/$option/Task$no/
-                lineno="`grep -n "${option::-3}" ~/task_submitted.txt | cut -f1 -d:`"
-                sed -i "$((lineno+no))d"  ~/task_submitted.txt
-                sed -i "$((lineno+no))i --Task$no: y" ~/task_submitted.txt
-                sed -i "s/--\(Task*\)/    \1/" ~/task_submitted.txt
+            mkdir -p ~/$option/Task$no/
+            lineno="`grep -n "${option::-3}" ~/task_submitted.txt | cut -f1 -d:`"
+            sed -i "$((lineno+no))d"  ~/task_submitted.txt
+            sed -i "$((lineno+no))i --Task$no: y" ~/task_submitted.txt
+            sed -i "s/--\(Task*\)/    \1/" ~/task_submitted.txt
+            if [ "${files[@]}" ]
+            then
+                echo "Select file to submit : "
+                select file in ${files[@]}
+                do
+                    cp ~/$file ~/$option/Task$no/
+                    break
+                done
                 break
-            done
+            fi
             break
         else
             echo "Enter valid no. "
