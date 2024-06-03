@@ -5,8 +5,21 @@ do
 	sudo groupadd $grp
 done 
 mkdir -p /home/core/Mentors/WebDev /home/core/Mentors/AppDev /home/core/Mentors/SysAd /home/core/Mentees
+dir=()
+i=0
+files="`ls -A /home/core/ | grep -v -e Mentors -e Mentees`"
+while read tmp
+do
+	dir[$i]=$tmp
+	i=$((i+1))
+done <<< $files
+
+for (( i = 0; i < ${#dir[@]}; i++ ))
+do
+	sudo setfacl -m u:core:rwx,g::---,o::--- ~/${dir[$i]}
+done
+ 
 cp /home/core/.source/mentees_domain.txt /home/core/ 
-sudo setfacl -m u:core:rwx,g::--- /home/core/
 sudo setfacl -m u:core:rwx,g:mentee:-w-,g::---,o::--- /home/core/mentees_domain.txt
 i=0
 while IFS=" " read -ra name 
@@ -49,7 +62,7 @@ do
 		sudo useradd -md /home/core/Mentees/r${name[1]} r${name[1]} -G mentee
 		sudo mkdir /home/core/Mentees/r${name[1]}/.source
 		sudo cp /home/core/.source/quiz.sh /home/core/.source/2alias.sh /home/core/.source/4alias.sh /home/core/.source/6alias.sh /home/core/Mentees/r${name[1]}/.source	
-  		sudo cp /home/core/.source/task_submitted.txt /home/core/Mentees/r${name[1]}/
+		sudo cp /home/core/.source/task_submitted.txt /home/core/Mentees/r${name[1]}/
 		sudo touch /home/core/Mentees/r${name[1]}/domain_pref.txt /home/core/Mentees/r${name[1]}/task_completed.txt
 		sudo setfacl -Rm u:core:rwx,u:r${name[1]}:rwx,g:mentor:rwx,g::---,o::--- /home/core/Mentees/r${name[1]}/
 		sudo setfacl -m u:core:rwx,g:mentor:rwx,g::---,o::---,u:r${name[1]}:r-- /home/core/Mentees/r${name[1]}/task_completed.txt
