@@ -129,18 +129,29 @@ do
             esac
         done
         echo "${dom[0]}$str" >> /home/core/displayStatus.txt
+        chmod 700 /home/core/displayStatus.txt
     fi
     i=1
 done < /home/core/mentees_domain.txt
-webtask1percent=$((ws1/wc*100))
-webtask2percent=$((ws2/wc*100))
-webtask3percent=$((ws3/wc*100))
-apptask1percent=$((as1/ac*100))
-apptask2percent=$((as2/ac*100))
-apptask3percent=$((as3/ac*100))
-systask1percent=$((ss1/sc*100))
-systask2percent=$((ss2/sc*100))
-systask3percent=$((ss3/sc*100))
+
+if [ $wc -ne 0 ]
+then
+    webtask1percent=$((ws1/wc*100))
+    webtask2percent=$((ws2/wc*100))
+    webtask3percent=$((ws3/wc*100))
+fi
+if [ $ac -ne 0 ]
+then
+    apptask1percent=$((as1/ac*100))
+    apptask2percent=$((as2/ac*100))
+    apptask3percent=$((as3/ac*100))
+fi
+if [ $sc -ne 0 ]
+then
+    systask1percent=$((ss1/sc*100))
+    systask2percent=$((ss2/sc*100))
+    systask3percent=$((ss3/sc*100))
+fi
 
 newsubmissions=""
 oldstat=0
