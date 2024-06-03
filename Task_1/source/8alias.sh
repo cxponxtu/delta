@@ -17,7 +17,7 @@ while IFS=" " read -ra mentee
 do
     users[$count]="${mentee[1]}"
     count=$((count+1))
-done < /home/core/Mentors/SysAd/purav/allocatedMentees.txt
+done < ~/allocatedMentees.txt
 
 for (( i = 0; i < ${#users[@]}; i++ ))
 do
