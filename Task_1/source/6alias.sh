@@ -12,11 +12,11 @@ select option in ${domain[@]}
 do
     case $option in 
     WebDev)
-        rm -r ~/WebDev ~/.mentorWebDev ;;
+        rm -rf ~/WebDev ~/.mentorWebDev ;;
     AppDev)
-        rm -r ~/AppDev ~/.mentorAppDev ;;
+        rm -rf ~/AppDev ~/.mentorAppDev ;;
     SysAd)
-        rm -r ~/SysAd ~/.mentorSysAd ;;
+        rm -rf ~/SysAd ~/.mentorSysAd ;;
     esac
     l=0
     for (( j = 1; j <= ${#domain[@]}; j++ ))
